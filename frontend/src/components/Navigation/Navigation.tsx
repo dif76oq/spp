@@ -1,22 +1,18 @@
-
+import { NavLink } from 'react-router-dom';
 import './Navigation.css';
 
-interface NavigationProps {
-  onPageChange: (page: string) => void;
-}
-
-const Navigation = ({ onPageChange }: NavigationProps) => {
+const Navigation = () => {
   return (
     <nav className="main-nav">
-      <button onClick={() => onPageChange('home')} >
+      <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>
         Главная
-      </button>
-      <button onClick={() => onPageChange('projects')} >
+      </NavLink>
+      <NavLink to="/projects" className={({ isActive }) => (isActive ? 'active' : '')}>
         Проекты
-      </button>
-      <button onClick={() => onPageChange('profile')} >
-        Профиль пользователя
-      </button>
+      </NavLink>
+      <NavLink to="/profile" className={({ isActive }) => (isActive ? 'active' : '')}>
+        Профиль
+      </NavLink>
     </nav>
   );
 };

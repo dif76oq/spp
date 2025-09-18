@@ -5,22 +5,31 @@
     margin-bottom: 10px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
-  
-  .task-card h4 {
-    margin: 0 0 8px 0;
-    font-size: 16px;
-  }
-  
-  .task-card .task-description {
-    margin: 0 0 12px 0;
-    font-size: 14px;
-    color: #6c757d;
-    white-space: pre-wrap; /* Сохраняет переносы строк в описании */
-  }
-  
-  .task-card .task-assignee {
-    margin: 0;
-    font-size: 12px;
-    color: #adb5bd;
-    text-align: right;
-  }
+
+.task-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.task-card-header h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  word-break: break-word; 
+}
+
+.delete-task-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #aaa;
+  font-size: 24px;
+  line-height: 1;
+  padding: 0 4px;
+  transition: color 0.2s;
+}
+
+.delete-task-btn:hover {
+  color: #d9534f;
+}

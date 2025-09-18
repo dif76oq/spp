@@ -1,57 +1,24 @@
-import { useState } from 'react';
-import type { Project } from './types';
-import { mockProjects } from './mock-data';
+import { Routes, Route } from 'react-router-dom';
+import { ProjectsProvider } from './context/ProjectsContext'; 
 
 import { Navigation } from './components';
 import { HomePage, ProjectsPage, ProfilePage, ProjectPage } from './pages';
-
 import './App.css';
 
 const App = () => {
-  const [currentPage, setCurrentPage] = useState('home');
-  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
-  const [projects] = useState<Project[]>(mockProjects);
-
-
-  const handleSelectProject = (projectId: string) => {
-    setSelectedProjectId(projectId);
-  };
-
-  const handleBackToProjects = () => {
-    setSelectedProjectId(null);
-  };
-
-  const handlePageChange = (page: string) => {
-    setSelectedProjectId(null);
-    setCurrentPage(page);
-  };
-
-  const selectedProject = projects.find(p => p.id === selectedProjectId);
-
-  const renderCurrentPage = () => {
-    if (selectedProject) {
-      return <ProjectPage project={selectedProject} onBack={handleBackToProjects} />;
-    }
-
-    switch (currentPage) {
-      case 'home':
-        return <HomePage />;
-      case 'projects':
-        return <ProjectsPage projects={projects} onSelectProject={handleSelectProject} />;
-      case 'profile':
-        return <ProfilePage />;
-      default:
-        return <HomePage />;
-    }
-  };
 
   return (
-    <div>
-      <Navigation onPageChange={handlePageChange} />
+    <ProjectsProvider> 
+      <Navigation /> 
       <main>
-        {renderCurrentPage()}
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects/:id" element={<ProjectPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+        </Routes>
       </main>
-    </div>
+    </ProjectsProvider>
   );
 };
 

@@ -53,7 +53,7 @@ const CreateTaskForm = ({ onAddTask }: CreateTaskFormProps) => {
       />
       <input
         type="text"
-        placeholder="Исполнитель (необязательно)"
+        placeholder="Исполнитель"
         value={assignee}
         onChange={(e) => setAssignee(e.target.value)}
       />

@@ -1,16 +1,15 @@
-import type { Project } from '../../types';
-import { ProjectList } from '../../components';
+import { useProjects } from '../../context/ProjectsContext'; 
+import { ProjectList, CreateProjectForm } from '../../components';
 
-interface ProjectsPageProps {
-  projects: Project[];
-  onSelectProject: (projectId: string) => void;
-}
+const ProjectsPage = () => {
+  const { projects, createProject } = useProjects();
 
-const ProjectsPage = ({ projects, onSelectProject }: ProjectsPageProps) => {
   return (
     <div>
       <h1>Проекты</h1>
-      <ProjectList projects={projects} onSelectProject={onSelectProject} />
+      <ProjectList projects={projects} />
+      <hr />
+      <CreateProjectForm onCreateProject={createProject} />
     </div>
   );
 };

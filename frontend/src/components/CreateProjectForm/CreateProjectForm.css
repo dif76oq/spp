@@ -1,0 +1,40 @@
+.create-project-form {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .create-project-form h4 {
+    margin: 0;
+    text-align: center;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .create-project-form input {
+    font-size: 16px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .create-project-form button {
+    font-size: 16px;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    background-color: #0d6efd;
+    transition: background-color 0.2s;
+  }
+  
+  .create-project-form button:hover {
+    background-color: #0b5ed7;
+  }

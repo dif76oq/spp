@@ -3,3 +3,5 @@ export { default as ProjectCard } from './ProjectCard';
 export { default as ProjectList } from './ProjectList';
 export { default as TaskCard } from './TaskCard';
 export { default as CreateTaskForm } from './CreateTaskForm';
+export { default as CreateProjectForm } from './CreateProjectForm';
+export { default as EditTaskForm } from './EditTaskForm';

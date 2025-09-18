@@ -1,22 +1,19 @@
+import { Link } from 'react-router-dom'; 
 import type { Project } from '../../types';
 import './ProjectCard.css';
 
 interface ProjectCardProps {
   project: Project;
-  onSelectProject: (projectId: string) => void;
 }
 
-const ProjectCard = ({ project, onSelectProject }: ProjectCardProps) => {
-  const taskCount = project.tasks.length;
-
+const ProjectCard = ({ project }: ProjectCardProps) => {
   return (
-    <div className="project-card"
-    onClick={() => {
-      onSelectProject(project.id);
-    }}>
-      <h3>{project.name}</h3>
-      <p>Задач: {taskCount}</p>
-    </div>
+    <Link to={`/projects/${project.id}`} className="project-card-link">
+      <div className="project-card">
+        <h3>{project.name}</h3>
+        <p>Задач: {project.tasks.length}</p>
+      </div>
+    </Link>
   );
 };
 

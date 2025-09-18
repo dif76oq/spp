@@ -1,43 +1,58 @@
-import { useState } from 'react';
-import type { Project, Task, TaskStatus } from '../../types';
+import { useParams, useNavigate } from 'react-router-dom'; 
+import type { Task, TaskStatus } from '../../types';
 import { TaskCard, CreateTaskForm } from '../../components';
+import { useProjects } from '../../context/ProjectsContext'; 
 import './ProjectPage.css';
 
-interface ProjectPageProps {
-  project: Project;
-  onBack: () => void;
-}
+const ProjectPage = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  
+  const { projects, addTask, deleteTask, editTask } = useProjects();
+  
+  const project = projects.find(p => p.id === id);
 
-const ProjectPage = ({ project, onBack }: ProjectPageProps) => {
-  const [tasks, setTasks] = useState<Task[]>(project.tasks);
+  if (!project) {
+    return <div>Проект не найден</div>;
+  }
 
-  const handleAddTask = (newTask: Task) => {
-    setTasks(prevTasks => [...prevTasks, newTask]);
+  const handleAddTaskWrapper = (newTask: Task) => {
+    addTask(project.id, newTask);
+  };
+
+  const handleEditTaskWrapper = (updatedTask: Task) => {
+    editTask(project.id, updatedTask);
+  };
+
+  const handleDeleteTaskWrapper = (taskId: string) => {
+    deleteTask(project.id, taskId);
   };
 
   const columns: TaskStatus[] = ['todo', 'in progress', 'done'];
 
   return (
     <div className="kanban-page">
-      <button onClick={onBack} className="back-button">&larr; Назад к проектам</button>
+      <button onClick={() => navigate('/projects')} className="back-button">
+        &larr; Назад к проектам
+      </button>
       <h2>{project.name}</h2>
-
-      <CreateTaskForm onAddTask={handleAddTask} />
 
       <div className="kanban-board">
         {columns.map(status => (
           <div key={status} className="kanban-column">
             <h3>{status.toUpperCase()}</h3>
             <div className="tasks-container">
-              {tasks
+              {project.tasks
                 .filter(task => task.status === status)
                 .map(task => (
-                  <TaskCard key={task.id} task={task} />
+                  <TaskCard key={task.id} task={task} onDeleteTask={handleDeleteTaskWrapper} onEditTask={handleEditTaskWrapper} />
                 ))}
             </div>
           </div>
         ))}
       </div>
+      <hr />
+      <CreateTaskForm onAddTask={handleAddTaskWrapper} />
     </div>
   );
 };
