@@ -1,32 +1,58 @@
-import { useState } from 'react'
-import { Navigation } from './components'
-import { HomePage, ProjectsPage, ProfilePage } from './pages'
-import './App.css'
+import { useState } from 'react';
+import type { Project } from './types';
+import { mockProjects } from './mock-data';
+
+import { Navigation } from './components';
+import { HomePage, ProjectsPage, ProfilePage, ProjectPage } from './pages';
+
+import './App.css';
 
 const App = () => {
-  const [currentPage, setCurrentPage] = useState('home')
+  const [currentPage, setCurrentPage] = useState('home');
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [projects] = useState<Project[]>(mockProjects);
 
-  const renderPage = () => {
+
+  const handleSelectProject = (projectId: string) => {
+    setSelectedProjectId(projectId);
+  };
+
+  const handleBackToProjects = () => {
+    setSelectedProjectId(null);
+  };
+
+  const handlePageChange = (page: string) => {
+    setSelectedProjectId(null);
+    setCurrentPage(page);
+  };
+
+  const selectedProject = projects.find(p => p.id === selectedProjectId);
+
+  const renderCurrentPage = () => {
+    if (selectedProject) {
+      return <ProjectPage project={selectedProject} onBack={handleBackToProjects} />;
+    }
+
     switch (currentPage) {
       case 'home':
-        return <HomePage />
+        return <HomePage />;
       case 'projects':
-        return <ProjectsPage />
+        return <ProjectsPage projects={projects} onSelectProject={handleSelectProject} />;
       case 'profile':
-        return <ProfilePage />
+        return <ProfilePage />;
       default:
-        return <HomePage />
+        return <HomePage />;
     }
-  }
+  };
 
   return (
     <div>
-      <Navigation onPageChange={setCurrentPage} />
+      <Navigation onPageChange={handlePageChange} />
       <main>
-        {renderPage()}
+        {renderCurrentPage()}
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
