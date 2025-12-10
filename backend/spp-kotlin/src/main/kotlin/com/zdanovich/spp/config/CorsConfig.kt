@@ -11,16 +11,20 @@ class CorsConfig(
 ) : WebMvcConfigurer {
 
     override fun addCorsMappings(registry: CorsRegistry) {
-        registry.addMapping("/api/**")
-            .allowedOrigins(
-                frontendUrl,
-                "http://localhost:3000",
-                "http://localhost",
-                "http://127.0.0.1",
-                "http://localhost:8080"
-            )
-            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-            .allowCredentials(true)
+        val allowedOrigins = listOf(
+            frontendUrl,
+            "http://localhost:3000",
+            "http://localhost",
+            "http://127.0.0.1",
+            "http://localhost:8080"
+        )
+
+        listOf("/api/**", "/auth/**", "/graphql", "/graphql/**").forEach { mapping ->
+            registry.addMapping(mapping)
+                .allowedOrigins(*allowedOrigins.toTypedArray())
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowCredentials(true)
+        }
     }
 }
 

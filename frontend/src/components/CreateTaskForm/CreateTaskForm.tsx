@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import type { Task, TaskStatus } from '../../types';
-import { generateId } from '../../utils/generateId';
+import type { TaskInput, TaskStatus } from '../../types';
 import './CreateTaskForm.css';
 
 interface CreateTaskFormProps {
-  onAddTask: (newTask: Task) => void;
+  onAddTask: (newTask: TaskInput) => Promise<void>;
 }
 
 const CreateTaskForm = ({ onAddTask }: CreateTaskFormProps) => {
@@ -13,27 +12,29 @@ const CreateTaskForm = ({ onAddTask }: CreateTaskFormProps) => {
   const [assignee, setAssignee] = useState('');
   const [status, setStatus] = useState<TaskStatus>('todo');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) {
       alert('Название задачи не может быть пустым');
       return;
     }
 
-    const newTask: Task = {
-      id: generateId(),
-      title,
+    const newTask: TaskInput = {
+      title: title.trim(),
       description,
       assignee,
       status,
     };
 
-    onAddTask(newTask);
-
-    setTitle('');
-    setDescription('');
-    setAssignee('');
-    setStatus('todo');
+    try {
+      await onAddTask(newTask);
+      setTitle('');
+      setDescription('');
+      setAssignee('');
+      setStatus('todo');
+    } catch (error) {
+      alert('Не удалось создать задачу. Попробуйте снова.');
+    }
   };
 
   return (

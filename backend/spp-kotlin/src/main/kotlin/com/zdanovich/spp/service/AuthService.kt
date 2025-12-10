@@ -42,7 +42,8 @@ class AuthService(
     }
 
     fun login(request: AuthLoginRequest): AuthTokenResponse {
-        val user = userRepository.findByLogin(request.login)
+        val trimmedLogin = request.login.trim()
+        val user = userRepository.findByLogin(trimmedLogin)
             ?: throw BadRequestException("Неверный логин или пароль")
 
         if (!passwordEncoder.matches(request.password, user.password)) {

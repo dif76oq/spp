@@ -9,6 +9,8 @@ import com.zdanovich.spp.exception.BadRequestException
 import com.zdanovich.spp.exception.ResourceNotFoundException
 import com.zdanovich.spp.repository.ProjectRepository
 import com.zdanovich.spp.repository.TaskRepository
+import com.zdanovich.spp.security.SecurityUtil
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,12 +19,19 @@ class TaskService(
     private val projectRepository: ProjectRepository
 ) {
     fun getTasksByProject(projectId: String): List<TaskResponse> {
-        ensureProjectExists(projectId)
+        ensureProjectAccess(projectId)
         return taskRepository.findByProjectId(projectId).map { it.toResponse() }
     }
 
+    fun getTask(taskId: String): TaskResponse {
+        val task = taskRepository.findById(taskId)
+            .orElseThrow { ResourceNotFoundException("Задача с id $taskId не найдена") }
+        ensureTaskAccess(task)
+        return task.toResponse()
+    }
+
     fun createTask(projectId: String, request: TaskCreateRequest): TaskResponse {
-        ensureProjectExists(projectId)
+        ensureProjectAccess(projectId)
 
         val title = validateTitle(request.title)
 
@@ -41,6 +50,7 @@ class TaskService(
         val task = taskRepository.findById(taskId)
             .orElseThrow { ResourceNotFoundException("Задача с id $taskId не найдена") }
 
+        ensureTaskAccess(task)
         task.title = validateTitle(request.title)
         task.description = request.description
         task.status = TaskStatus.fromLabel(request.status)
@@ -50,16 +60,28 @@ class TaskService(
     }
 
     fun deleteTask(taskId: String) {
-        if (!taskRepository.existsById(taskId)) {
-            throw ResourceNotFoundException("Задача с id $taskId не найдена")
+        val task = taskRepository.findById(taskId)
+            .orElseThrow { ResourceNotFoundException("Задача с id $taskId не найдена") }
+
+        ensureTaskAccess(task)
+        taskRepository.delete(task)
+    }
+    private fun ensureProjectAccess(projectId: String) {
+        val project = projectRepository.findById(projectId)
+            .orElseThrow { ResourceNotFoundException("Проект с id $projectId не найден") }
+
+        if (SecurityUtil.isAdmin()) {
+            return
         }
-        taskRepository.deleteById(taskId)
+
+        val login = SecurityUtil.requireAuthenticated()
+        if (!project.members.contains(login)) {
+            throw AccessDeniedException("Нет доступа к проекту")
+        }
     }
 
-    private fun ensureProjectExists(projectId: String) {
-        if (!projectRepository.existsById(projectId)) {
-            throw ResourceNotFoundException("Проект с id $projectId не найден")
-        }
+    private fun ensureTaskAccess(task: TaskEntity) {
+        ensureProjectAccess(task.projectId)
     }
 
     private fun validateTitle(title: String): String {

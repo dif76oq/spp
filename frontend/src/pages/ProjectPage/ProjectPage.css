@@ -26,6 +26,18 @@
     margin-top: 24px;
   }
   
+.project-description {
+    margin-top: 8px;
+    margin-bottom: 4px;
+    color: #555;
+}
+
+.project-members {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 16px;
+}
+
   .kanban-column {
     flex: 1; /* Каждая колонка занимает равное пространство */
     background-color: #f0f2f5;

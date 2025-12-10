@@ -1,16 +1,47 @@
 .main-nav {
     display: flex; 
+    justify-content: space-between;
+    align-items: center;
     background-color: #2c3e50; 
     padding: 0 20px; 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
   }
   
-  .main-nav a { 
+.nav-links,
+.nav-actions {
+    display: flex;
+    align-items: center;
+  }
+
+.nav-links a,
+.nav-actions a {
     color: white;
     padding: 15px 20px;
     text-decoration: none;
   }
-  .main-nav a.active { 
+.nav-links a.active,
+.nav-actions a.active {
     background-color: #e67e22;
+  }
+
+.nav-user {
+    color: #f9f9f9;
+    font-size: 14px;
+    margin-right: 12px;
+  }
+
+.nav-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    background-color: #e74c3c;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+.nav-button:hover {
+    background-color: #c0392b;
   }
 

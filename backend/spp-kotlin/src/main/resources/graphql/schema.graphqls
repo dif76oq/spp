@@ -1,0 +1,46 @@
+type Query {
+    projects: [Project!]!
+    project(id: ID!): Project
+    tasks(projectId: ID!): [Task!]!
+    task(id: ID!): Task
+}
+
+type Mutation {
+    createProject(input: ProjectInput!): Project!
+    updateProject(id: ID!, input: ProjectInput!): Project!
+    deleteProject(id: ID!): Boolean!
+    createTask(projectId: ID!, input: TaskInput!): Task!
+    updateTask(id: ID!, input: TaskInput!): Task!
+    deleteTask(id: ID!): Boolean!
+}
+
+type Project {
+    id: ID!
+    name: String!
+    description: String
+    members: [String!]!
+    tasks: [Task!]!
+}
+
+type Task {
+    id: ID!
+    title: String!
+    description: String!
+    status: String!
+    assignee: String!
+    projectId: ID!
+}
+
+input ProjectInput {
+    name: String!
+    description: String
+    members: [String!]
+}
+
+input TaskInput {
+    title: String!
+    description: String
+    status: String
+    assignee: String
+}
+

@@ -10,8 +10,8 @@ interface EditTaskFormProps {
 
 const EditTaskForm = ({ task, onSave, onCancel }: EditTaskFormProps) => {
   const [title, setTitle] = useState(task.title);
-  const [description, setDescription] = useState(task.description);
-  const [assignee, setAssignee] = useState(task.assignee || '');
+  const [description, setDescription] = useState(task.description ?? '');
+  const [assignee, setAssignee] = useState(task.assignee ?? '');
   const [status, setStatus] = useState<TaskStatus>(task.status);
 
   const handleSubmit = (e: React.FormEvent) => {

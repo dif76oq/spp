@@ -27,3 +27,17 @@
     color: #666;
     font-size: 14px;
   }
+
+.project-description {
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 14px;
+}
+
+.project-stats {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: #777;
+    margin-top: 12px;
+}

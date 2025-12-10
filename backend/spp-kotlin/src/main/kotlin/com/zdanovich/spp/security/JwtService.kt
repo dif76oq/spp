@@ -17,8 +17,9 @@ class JwtService(
     @Value("\${jwt.secret}") private val secret: String,
     @Value("\${jwt.expiration-ms}") private val expirationMs: Long
 ) {
-    private val key: Key
-        get() = Keys.hmacShaKeyFor(secret.toByteArray(StandardCharsets.UTF_8))
+    private val key: Key by lazy {
+        Keys.hmacShaKeyFor(secret.toByteArray(StandardCharsets.UTF_8))
+    }
 
     fun generateToken(user: UserEntity): String {
         val now = Date()
